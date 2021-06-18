@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from "./lib/commerce";
-import { Products, Navbar, Cart } from "./components";
+import { Products, Navbar, Cart, Checkout } from "./components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
@@ -26,16 +26,30 @@ const App = () => {
 
   //WHICH PRODUCTS DO WE WANT TO ADD AND HOW MANY - pass it as a prop & use in Products component
   const handleAddToCart = async (productId, quantity) => {
-    const reponse = await commerce.cart.add(productId, quantity);
+    const { cart } = await commerce.cart.add(productId, quantity);
 
-    setCart(response.cart);
+    setCart(cart);
   }
 
-  //REMOVING ITEMS FROM THE CART
+  //UPDATING CART
   const handleUpdateCartQty = async (productId, quantity) => {
-    const response = await commerce.cart.update(productId, quantity);
+    const { cart } = await commerce.cart.update(productId, quantity);
 
-    setCart(response.cart);
+    setCart(cart);
+  }
+
+  //REMOVING FROM CART
+  const handleRemoveFromCart = async (productId) => {
+    const { cart } = await commerce.cart.remove(productId);
+
+    setCart(cart);
+  }
+
+  //CART IS EMPTY
+  const handleEmptyCart = async () => {
+    const { cart } = await commerce.cart.empty();
+
+    setCart(cart);
   }
 
   //USEEFFECT
@@ -55,7 +69,16 @@ const App = () => {
           </Route>
 
           <Route exact path="/cart">
-            <Cart cart={cart} />
+            <Cart 
+              cart={cart}
+              handleUpdateCartQty={handleUpdateCartQty}
+              handleRemoveFromCart={handleRemoveFromCart}
+              handleEmptyCart={handleEmptyCart}
+            />
+          </Route>
+
+          <Route>
+            <Checkout />
           </Route>
 
         </Switch>
