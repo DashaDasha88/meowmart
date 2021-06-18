@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from "./lib/commerce";
-import { Products, Navbar } from "./components";
+import { Products, Navbar, Cart } from "./components";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
 
@@ -16,6 +17,8 @@ const App = () => {
 
   }
 
+  console.log(cart);
+
   //WHAT IS IN THE CART
   const fetchCart = async () => {
     setCart(await commerce.cart.retrieve());
@@ -23,9 +26,16 @@ const App = () => {
 
   //WHICH PRODUCTS DO WE WANT TO ADD AND HOW MANY - pass it as a prop & use in Products component
   const handleAddToCart = async (productId, quantity) => {
-    const item = await commerce.cart.add(productId, quantity);
+    const reponse = await commerce.cart.add(productId, quantity);
 
-    setCart(item.cart);
+    setCart(response.cart);
+  }
+
+  //REMOVING ITEMS FROM THE CART
+  const handleUpdateCartQty = async (productId, quantity) => {
+    const response = await commerce.cart.update(productId, quantity);
+
+    setCart(response.cart);
   }
 
   //USEEFFECT
@@ -35,10 +45,22 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar totalItems={cart.total_items}/>
-      <Products products={products} onAddToCart={handleAddToCart} />
-    </div>
+    <Router>
+      <div>
+        <Navbar totalItems={cart.total_items}/>
+        <Switch>
+
+          <Route exact path="/">
+            <Products products={products} onAddToCart={handleAddToCart} />
+          </Route>
+
+          <Route exact path="/cart">
+            <Cart cart={cart} />
+          </Route>
+
+        </Switch>
+      </div>
+    </Router>
   )
 }
 
