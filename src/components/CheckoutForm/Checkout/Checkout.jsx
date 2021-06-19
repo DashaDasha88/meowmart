@@ -3,9 +3,7 @@ import { Paper, Stepper, Step, }
 
 const Checkout = () => {
   return (
-    <div>
-      
-    </div>
+
   )
 }
 
