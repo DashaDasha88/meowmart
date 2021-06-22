@@ -1,9 +1,8 @@
 import React from 'react';
-import { Paper, Stepper, Step, }
 
 const Checkout = () => {
   return (
-
+    <div>Checkout</div>
   )
 }
 

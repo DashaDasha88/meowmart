@@ -77,7 +77,7 @@ const App = () => {
             />
           </Route>
 
-          <Route>
+          <Route exact path="/checkout">
             <Checkout />
           </Route>
 
