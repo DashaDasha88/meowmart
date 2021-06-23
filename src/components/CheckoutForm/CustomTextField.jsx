@@ -15,6 +15,7 @@ return (
               render = {({ field})=> (
                   <TextField
                       fullWidth
+                      defaultValue = ""
                       label={label}
                       required
                   />
